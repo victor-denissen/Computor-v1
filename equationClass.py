@@ -36,31 +36,40 @@ class equation:
     def __str__(self) -> str:
         def format_side(side: dict):
             side = dict(
-                sorted(side.items(), key=lambda item: item[0], reverse=True)
-            )
+                    sorted(
+                        side.items(),
+                        key=lambda item: (item[0] == 0, -item[0])
+                        )
+                    )
             if all(value == 0 for value in side.values()):
                 return "0"
             string = ""
+            """
+                [value]x^[key]
+            """
             for key, value in side.items():
                 if value == 0:
                     continue
                 if string and value > 0:
                     string += "+"
-                if key == value == 1:
-                    string += "x"
-                    continue
-                if value % 1 == 0:
-                    string += str(int(value))
-                else:
-                    string += str(value)
-                if key == 1:
-                    string += "x"
-                elif key != 0:
-                    string += "x^"
-                    if value % 1 == 0:
+
+                if key == 0 or value != 1:
+                    if value == -1 and key != 0:
+                        string += "-"
+                    elif value % 1 == 0:
                         string += str(int(value))
                     else:
                         string += str(value)
+
+                if key != 0 and value != 0:
+                    string += 'x'
+
+                if value != 0 and key != 1 and key != 0:
+                    string += "^"
+                    if key % 1 == 0:
+                        string += str(int(key))
+                    else:
+                        string += str(key)
             return string
 
         left = format_side(
@@ -84,6 +93,10 @@ class equation:
             print("not yet simplified")
             return
         highest_key = max(self.left_side.keys())
+        lowest_key = min(self.left_side.keys())
+        if lowest_key < 0:
+            print("negative exponent")
+            return
         match highest_key:
             case 0:
                 if self.left_side.get(0, 0) == self.right_side.get(0, 0):
@@ -99,9 +112,9 @@ class equation:
         return
 
     def solve_first_degree(self):
-        self.right_side[0] = -self.left_side[0]
+        self.right_side[0] = -self.left_side.get(0,0)
         self.left_side[0] = 0
-        self.right_side[0] /= self.left_side[1]
+        self.right_side[0] /= self.left_side.get(1,1)
         self.left_side[1] = 1
         print(f"solution: {self}")
 

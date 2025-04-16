@@ -32,7 +32,7 @@ def insert_multiply(tokens):
 
 
 def insert_negative(tokens):
-    i = 1
+    i = 0
     while i < len(tokens):
         if tokens[i].string == "-":
             if tokens[i + 1]:
@@ -78,10 +78,11 @@ def main():
 
     tokens = Token.tokenize_polynomial(equation_str)
 
+    insert_negative(tokens)
+
     insert_exponent(tokens)
 
     insert_multiply(tokens)
-    insert_negative(tokens)
 
     solve_multiplication(tokens)
 
