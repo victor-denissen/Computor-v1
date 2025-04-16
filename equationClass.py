@@ -47,11 +47,13 @@ class equation:
                 [value]x^[key]
             """
             for key, value in side.items():
-                if value == 0:
+                if value == 0: # nothing to print if value == 0
                     continue
+                # check if the + between values need to be pronted
                 if string and value > 0:
                     string += "+"
 
+                # The logic if printing the number itself
                 if key == 0 or value != 1:
                     if value == -1 and key != 0:
                         string += "-"
