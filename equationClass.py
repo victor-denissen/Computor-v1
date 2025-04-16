@@ -35,8 +35,11 @@ class equation:
     def __str__(self) -> str:
         def format_side(side: dict):
             side = dict(
-                sorted(side.items(), key=lambda item: (item[0] == 0, -item[0]))
-            )
+                    sorted(
+                        side.items(),
+                        key=lambda item: (item[0] == 0, -item[0])
+                        )
+                    )
             if all(value == 0 for value in side.values()):
                 return "0"
             string = ""
@@ -111,6 +114,9 @@ class equation:
         self.right_side[0] = -self.left_side.get(0, 0)
         self.left_side[0] = 0
         self.right_side[0] /= self.left_side.get(1, 1)
+        self.right_side[0] = -self.left_side.get(0,0)
+        self.left_side[0] = 0
+        self.right_side[0] /= self.left_side.get(1,1)
         self.left_side[1] = 1
         print(f"solution: {self}")
 
