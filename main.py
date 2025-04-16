@@ -14,7 +14,10 @@ def insert_exponent(tokens):
             continue
         if token.type == TokenType.EXPONENT:
             del tokens[i]  # Delete exponent operator
-            last_token.exponent = tokens[i].number
+            if last_token.type == TokenType.VARIABLE:
+                last_token.exponent = tokens[i].number
+            else:
+                last_token.number = last_token.number ** tokens[i].number
             del tokens[i]  # Delete exponent number
             continue
         i += 1
