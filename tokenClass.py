@@ -16,7 +16,7 @@ class TokenType(Enum):
 class Token:
     string: str
     _type: TokenType
-    _number: int = 1
+    _number: float = 1
     _exponent: int = 0
 
     @property
@@ -60,7 +60,7 @@ class Token:
             elif raw == "^":
                 tokens.append(Token(raw, TokenType.EXPONENT))
             elif raw.isdigit() or re.match(r"^\d+\.\d+$", raw):
-                tokens.append(Token(raw, TokenType.NUMBER, _number=int(raw)))
+                tokens.append(Token(raw, TokenType.NUMBER, _number=float(raw)))
             elif raw.isalpha():
                 tokens.append(Token(raw, TokenType.VARIABLE, _exponent=1))
             else:

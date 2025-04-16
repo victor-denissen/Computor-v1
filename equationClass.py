@@ -44,15 +44,23 @@ class equation:
             for key, value in side.items():
                 if value == 0:
                     continue
-                if key == value == 1:
-                    return "x"
                 if string and value > 0:
                     string += "+"
-                string += str(value)
+                if key == value == 1:
+                    string += "x"
+                    continue
+                if value % 1 == 0:
+                    string += str(int(value))
+                else:
+                    string += str(value)
                 if key == 1:
                     string += "x"
                 elif key != 0:
-                    string += "x^" + str(key)
+                    string += "x^"
+                    if value % 1 == 0:
+                        string += str(int(value))
+                    else:
+                        string += str(value)
             return string
 
         left = format_side(
@@ -111,7 +119,7 @@ class equation:
             complex = False
             print("The discriminant is positive, showing solutions")
 
-        root = math.sqrt(discriminant)
+        root = discriminant ** (1/2)
         sol_base = -b / (2 * a)
         sol_add = root / (2 * a)
 
@@ -125,6 +133,6 @@ class equation:
             sol1 += str(sol_add) + "i"
 
             sol2 = sol_base
-            sol2 += "-" if sol_add > 0 else " + "
+            sol2 += " - " if sol_add > 0 else " + "
             sol2 += str(sol_add) + "i"
         print(f"sol1: {sol1}\nsol2: {sol2}")
