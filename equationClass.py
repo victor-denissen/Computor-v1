@@ -85,6 +85,8 @@ class equation:
         for key, value in self.right_side.items():
             if key in self.left_side:
                 self.left_side[key] -= value
+                if self.left_side[key] == 0:
+                    del self.left_side[key]
             else:
                 self.left_side[key] = -value
         self.right_side = {}
