@@ -50,7 +50,7 @@ def multiply(tokens, index1, index2):
     token2: Token = tokens[index2]
     result = token1.number * token2.number
 
-    if token2.type == TokenType.VARIABLE and token1.type == TokenType.VARIABLE:
+    if token2.type == TokenType.VARIABLE or token1.type == TokenType.VARIABLE:
         token1.exponent += token2.exponent
     if token2.type == TokenType.VARIABLE or token1.type == TokenType.VARIABLE:
         token1.type = TokenType.VARIABLE
@@ -66,9 +66,28 @@ def solve_multiplication(tokens):
         token = tokens[i]
         if token.string == "*":
             multiply(tokens, i - 1, i + 1)
-            del tokens[i]
+            tokens.remove(tokens[i])
             continue
         i += 1
+
+def remove_irrelevant(tokens):
+    i = 0;
+    while i < len(tokens):
+        token = tokens[i]
+        if token.type != TokenType.VARIABLE and token.type != TokenType.NUMBER:
+            if token.type == TokenType.EQUAL:
+                i += 1
+                continue
+            tokens.remove(token)
+            continue
+        if token._number == 0.0:
+            tokens.remove(token)
+            continue
+        if token.exponent == 0:
+            token.type = TokenType.NUMBER
+            token.string_gen()
+        i += 1
+
 
 
 def main():
@@ -81,6 +100,10 @@ def main():
 
     tokens = Token.tokenize_polynomial(equation_str)
 
+    # for token in tokens:
+    #     print(token)
+    # print()
+
     insert_negative(tokens)
 
     insert_exponent(tokens)
@@ -88,6 +111,8 @@ def main():
     insert_multiply(tokens)
 
     solve_multiplication(tokens)
+
+    remove_irrelevant(tokens)
 
     equation = eq_class(tokens)
 

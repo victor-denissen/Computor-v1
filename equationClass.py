@@ -26,11 +26,19 @@ class equation:
         while i < len(tokens):
             token = tokens[i]
             t = token.type
-            if token.exponent in self.right_side:
-                self.right_side[token.exponent] += token.number
-            else:
-                self.right_side[token.exponent] = token.number
+            if t == TokenType.VARIABLE or t == TokenType.NUMBER:
+                if token.exponent in self.right_side:
+                    self.right_side[token.exponent] += token.number
+                else:
+                    self.right_side[token.exponent] = token.number
             i += 1
+
+    def print(self):
+        for key in self.left_side.keys():
+            print(f"{key}:{self.left_side[key]}")
+        print("=")
+        for key in self.right_side.keys():
+            print(f"{key}:{self.right_side[key]}")
 
     def __str__(self) -> str:
         def format_side(side: dict):
@@ -111,17 +119,19 @@ class equation:
             case 2:
                 self.solve_second_degree()
             case _:
-                print("unsolvable")
+                print("Non [0,1,2] exponent, I will not solve")
         return
 
     def solve_first_degree(self):
         self.right_side[0] = -self.left_side.get(0, 0)
         self.left_side[0] = 0
+        self.print()
+
         self.right_side[0] /= self.left_side.get(1, 1)
-        self.right_side[0] = -self.left_side.get(0,0)
-        self.left_side[0] = 0
-        self.right_side[0] /= self.left_side.get(1,1)
         self.left_side[1] = 1
+
+        self.print()
+
         print(f"solution: {self}")
 
     def solve_second_degree(self):
@@ -130,22 +140,26 @@ class equation:
         c = self.left_side.get(0, 0)
 
         discriminant = b**2 - 4 * a * c
-        if discriminant < 0:
-            discriminant *= -1
-            complex = True
-            print("The discriminant is negative, showing complex solutions")
-        else:
-            complex = False
-            print("The discriminant is positive, showing solutions")
-
-        root = discriminant ** (1 / 2)
         sol_base = -b / (2 * a)
-        sol_add = root / (2 * a)
+        if discriminant == 0:
+            print("The discriminant is 0, showing solution")
+            sol = str(sol_base)
+            print(f"sol: {sol}")
+            return
 
-        if not complex:
+
+        if discriminant > 0:
+            root = discriminant ** (1 / 2)
+            sol_add = root / (2 * a)
+            print("The discriminant is positive, showing solutions")
             sol1 = str(sol_base + sol_add)
             sol2 = str(sol_base - sol_add)
+            print(f"sol1: {sol1}\nsol2: {sol2}")
         else:
+            print("The discriminant is negative, showing complex solutions")
+            discriminant *= -1
+            root = discriminant ** (1 / 2)
+            sol_add = root / (2 * a)
             sol_base = str(sol_base)
             sol1 = sol_base
             sol1 += " + " if sol_add > 0 else " - "
@@ -154,4 +168,4 @@ class equation:
             sol2 = sol_base
             sol2 += " - " if sol_add > 0 else " + "
             sol2 += str(sol_add) + "i"
-        print(f"sol1: {sol1}\nsol2: {sol2}")
+            print(f"sol1: {sol1}\nsol2: {sol2}")
