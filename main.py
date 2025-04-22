@@ -70,8 +70,9 @@ def solve_multiplication(tokens):
             continue
         i += 1
 
+
 def remove_irrelevant(tokens):
-    i = 0;
+    i = 0
     while i < len(tokens):
         token = tokens[i]
         if token.type != TokenType.VARIABLE and token.type != TokenType.NUMBER:
@@ -87,7 +88,6 @@ def remove_irrelevant(tokens):
             token.type = TokenType.NUMBER
             token.string_gen()
         i += 1
-
 
 
 def main():

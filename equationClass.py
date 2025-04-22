@@ -43,11 +43,8 @@ class equation:
     def __str__(self) -> str:
         def format_side(side: dict):
             side = dict(
-                    sorted(
-                        side.items(),
-                        key=lambda item: (item[0] == 0, -item[0])
-                        )
-                    )
+                sorted(side.items(), key=lambda item: (item[0] == 0, -item[0]))
+            )
             if all(value == 0 for value in side.values()):
                 return "0"
             string = ""
@@ -55,7 +52,7 @@ class equation:
                 [value]x^[key]
             """
             for key, value in side.items():
-                if value == 0: # nothing to print if value == 0
+                if value == 0:  # nothing to print if value == 0
                     continue
                 # check if the + between values need to be pronted
                 if string and value > 0:
@@ -146,7 +143,6 @@ class equation:
             sol = str(sol_base)
             print(f"sol: {sol}")
             return
-
 
         if discriminant > 0:
             root = discriminant ** (1 / 2)
