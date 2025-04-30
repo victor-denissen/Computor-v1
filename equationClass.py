@@ -100,8 +100,12 @@ class equation:
         if not all(value == 0 for value in self.right_side.values()):
             print("not yet simplified")
             return
-        highest_key = max(self.left_side.keys())
-        lowest_key = min(self.left_side.keys())
+        if self.left_side.keys():
+            highest_key = max(self.left_side.keys())
+            lowest_key = min(self.left_side.keys())
+        else:
+            highest_key = 0
+            lowest_key = 0
         if lowest_key < 0:
             print("negative exponent")
             return
