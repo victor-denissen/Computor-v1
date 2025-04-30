@@ -3,6 +3,19 @@ from tokenClass import Token, TokenType
 from equationClass import equation as eq_class
 
 
+def check_var(tokens):
+    var = ""
+    var_set = False
+    for token in tokens:
+        if token.type == TokenType.VARIABLE:
+            if not var_set:
+                var = token.string
+                var_set = True
+            elif var != token.string:
+                raise Exception("Not the same var types")
+    return var
+
+
 def insert_exponent(tokens):
     i = 0
     last_token = tokens[0]
@@ -100,6 +113,12 @@ def main():
 
     tokens = Token.tokenize_polynomial(equation_str)
 
+    try:
+        var = check_var(tokens)
+    except Exception:
+        print("Different variables")
+        return
+
     # for token in tokens:
     #     print(token)
     # print()
@@ -114,7 +133,7 @@ def main():
 
     remove_irrelevant(tokens)
 
-    equation = eq_class(tokens)
+    equation = eq_class(tokens, var)
 
     equation.simplify()
 

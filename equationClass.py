@@ -9,7 +9,10 @@ class equation:
 
     right_side = {}
 
-    def __init__(self, tokens):
+    var = ""
+
+    def __init__(self, tokens, var):
+        self.var = var
         i = 0
         while i < len(tokens):
             token = tokens[i]
@@ -68,7 +71,7 @@ class equation:
                         string += str(value)
 
                 if key != 0 and value != 0:
-                    string += "x"
+                    string += self.var
 
                 if value != 0 and key != 1 and key != 0:
                     string += "^"
